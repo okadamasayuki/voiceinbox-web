@@ -104,6 +104,11 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* hidden 属性は必ず効かせる。
+   .gate や .btn のように display を指定した要素は、作者スタイルが
+   ブラウザ標準の [hidden]{display:none} に勝ってしまい、隠したつもりが出てしまう。 */
+[hidden] { display: none !important; }
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {
@@ -201,7 +206,10 @@ select { cursor: pointer; }
 
 .field { margin-bottom: 16px; }
 .field > label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 5px; }
-.field .hint { margin: 5px 0 0; font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+.field .hint { margin: 5px 0 0; font-size: 13px; color: var(--text-dim); line-height: 1.6; font-weight: 400; }
+
+/* チェックボックスの説明は、ラベルの太字を引き継がない */
+.field > label.check { font-weight: 400; font-size: inherit; margin-bottom: 0; }
 
 .check {
   display: flex;
