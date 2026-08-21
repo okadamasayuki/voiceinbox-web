@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#f5f6f8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14171b" media="(prefers-color-scheme: dark)">
+<title>はじめかた — VoiceInbox</title>
+<link rel="stylesheet" href="./style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f6fed'/%3E%3Ctext x='32' y='45' font-size='38' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<div class="doc">
+
+  <header class="doc-head">
+    <a class="backlink" href="./index.html">← VoiceInbox にもどる</a>
+    <h1>はじめかた — 鍵の作り方</h1>
+    <p>この画面を使うには、GitHub で「鍵」（fine-grained personal access token）を 1 つ作ります。7 手順、5 分ほどです。<br>
+       鍵は<b>端末ごとに 1 つずつ</b>作ってください（会社のパソコン・自宅のパソコン・iPhone）。</p>
+  </header>
+
+  <!-- 1 -->
+  <section class="step">
+    <h2 class="step-title"><span class="step-num">1</span>GitHub の右上のアイコンから Settings を開く</h2>
+    <p>リポジトリの Settings ではありません。<b>アカウントの Settings</b> です。GitHub のどのページからでも、右上の丸いアイコンを押すと出てきます。</p>
+    <div class="mock">
+      <div class="mock-bar"><span class="ghmark"></span><span>GitHub</span><span class="avatar is-hi"></span></div>
+      <div class="mock-list">
+        <div class="mock-item">Your profile</div>
+        <div class="mock-item">Your repositories</div>
+        <div class="mock-sep"></div>
+        <div class="mock-item is-hi">⚙️ Settings</div>
+        <div class="mock-item">Sign out</div>
+      </div>
+    </div>
+    <p class="mock-cap">右上のアイコン → メニューの下のほうにある Settings</p>
+  </section>
+
+  <!-- 2 -->
+  <section class="step">
+    <h2 class="step-title"><span class="step-num">2</span>左のメニューをいちばん下まで送り、Developer settings を開く</h2>
+    <p>項目が多いので、見つからないときはページの<b>最下部</b>までスクロールしてください。</p>
+    <div class="mock">
+      <div class="mock-bar"><span class="dot"></span><span>Account settings</span></div>
+      <div class="mock-list">
+        <div class="mock-item">Public profile</div>
+        <div class="mock-item">Account</div>
+        <div class="mock-item">Appearance</div>
+        <div class="mock-scrollhint">・・・ 途中の項目は省略 ・・・</div>
+        <div class="mock-item">Applications</div>
+        <div class="mock-item">Scheduled reminders</div>
+        <div class="mock-item is-hi">&lt;/&gt; Developer settings</div>
+      </div>
+    </div>
+    <p class="mock-cap">左メニューのいちばん最後にあります</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="step">
+    <h2 class="step-title"><span class="step-num">3</span>Personal access tokens → Fine-grained tokens を選ぶ</h2>
+    <p><b>Tokens (classic) ではありません。</b>classic は「どのリポジトリにも効く鍵」になってしまうので使いません。</p>
+    <div class="mock">
+      <div class="mock-bar"><span class="dot"></span><span>Developer settings</span></div>
+      <div class="mock-list">
+        <div class="mock-item">GitHub Apps</div>
+        <div class="mock-item">OAuth Apps</div>
+        <div class="mock-item">Personal access tokens <span class="caret">▾</span></div>
+      </div>
+      <div class="mock-tabs">
+        <span class="mock-tab is-hi">Fine-grained tokens</span>
+        <span class="mock-tab is-off">Tokens (classic)</span>
+      </div>
+      <div class="mock-pane">
+        <span class="mock-btn">Generate new token</span>
+      </div>
+    </div>
+    <p class="mock-cap">Fine-grained tokens のほうを選び、Generate new token を押します</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="step">
+    <h2 class="step-title"><span class="step-num">4</span>名前・期限・所有者を決める</h2>
+    <ul>
+      <li><b>Token name</b> … どの端末の鍵か後で分かる名前にします（例: <code>会社PC</code> / <code>自宅PC</code> / <code>iPhone</code>）。</li>
+      <li><b>Expiration</b> … 有効期限。90 日くらいが扱いやすいです。期限が来たら作り直します。</li>
+      <li><b>Resource owner</b> … 自分のアカウントを選びます。</li>
+    </ul>
+    <div class="mock">
+      <div class="mock-bar"><span class="dot"></span><span>New fine-grained personal access token</span></div>
+      <div class="mock-pane">
+        <div class="mock-field"><span>Token name</span>
+          <div class="mock-input is-hi">会社PC</div></div>
+        <div class="mock-field"><span>Expiration</span>
+          <div class="mock-input select is-hi">90 days</div></div>
+        <div class="mock-field"><span>Resource owner</span>
+          <div class="mock-input select is-hi">（自分のアカウント）</div></div>
+      </div>
+    </div>
+    <p class="mock-cap">期限を書き留めておくと、VoiceInbox の設定画面に入れて残り日数を表示できます</p>
+  </section>
+
+  <!-- 5 -->
+  <section class="step">
+    <h2 class="step-title"><span class="step-num">5</span>Repository access で「Only select repositories」を選ぶ</h2>
+    <p>そのうえで、<b>メモを保存するリポジトリ 1 つだけ</b>を指定します。ここがいちばん大事なところです。</p>
+    <div class="mock">
+      <div class="mock-bar"><span class="dot"></span><span>Repository access</span></div>
+      <div class="mock-pane">
+        <div class="mock-radio is-bad"><span class="bullet"></span><span class="label">Public repositories (read-only)</span></div>
+        <div class="mock-radio is-hi"><span class="bullet"></span>
+          <span class="label"><b>Only select repositories</b><br>
+          <span style="color:var(--text-dim)">選んだリポジトリだけに効く鍵になります</span></span></div>
+        <div class="mock-radio is-bad"><span class="bullet"></span><span class="label">All repositories</span></div>
+        <div class="mock-field" style="margin-top:10px"><span>Select repositories</span>
+          <div class="mock-input is-hi select">（メモ用のリポジトリを 1 つ）</div></div>
+      </div>
+    </div>
+    <p class="mock-cap">All repositories は選ばないでください</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="step">
+    <h2 class="step-title"><span class="step-num">6</span>Repository permissions で Issues だけを Read and write にする</h2>
+    <p>権限の一覧はとても長いですが、<b>触るのは Issues の 1 行だけ</b>です。Metadata は自動で Read-only が付きます。ほかはすべて <code>No access</code> のままにしてください。</p>
+    <div class="mock">
+      <div class="mock-bar"><span class="dot"></span><span>Repository permissions</span></div>
+      <div>
+        <div class="mock-perm"><span class="pname">Actions</span><span class="pval">No access</span></div>
+        <div class="mock-perm"><span class="pname">Contents</span><span class="pval">No access</span></div>
+        <div class="mock-perm is-hi"><span class="pname">Issues</span><span class="pval">Read and write</span></div>
+        <div class="mock-perm is-auto"><span class="pname">Metadata</span><span class="pval">Read-only（自動）</span></div>
+        <div class="mock-perm"><span class="pname">Pull requests</span><span class="pval">No access</span></div>
+        <div class="mock-scrollhint">・・・ ほかの項目はすべて No access のまま ・・・</div>
+      </div>
+    </div>
+    <p class="mock-cap">Issues の権限にはラベルの読み書きも含まれます。送信先の一覧はここから作られます</p>
+  </section>
+
+  <!-- 7 -->
+  <section class="step">
+    <h2 class="step-title"><span class="step-num">7</span>表示された文字列をコピーする</h2>
+    <p>Generate token を押すと、<code>github_pat_</code> で始まる長い文字列が一度だけ表示されます。これが鍵です。</p>
+    <div class="mock">
+      <div class="mock-bar"><span class="dot"></span><span>Personal access tokens (fine-grained)</span></div>
+      <div class="mock-token">github_pat_<span style="letter-spacing:.06em">••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••</span><br>
+        <span style="color:var(--text-dim);font-family:var(--font);font-size:12px">（実際には英数字の長い文字列が表示されます）</span></div>
+      <div class="mock-pane" style="padding-top:0">
+        <span class="mock-btn ghost">📋 Copy</span>
+      </div>
+    </div>
+    <p class="mock-cap">この画面を閉じると二度と表示されません</p>
+    <p>コピーしたら <a href="./index.html">VoiceInbox の画面</a> にもどって、オーナー名・リポジトリ名とあわせて貼り付けてください。</p>
+  </section>
+
+  <!-- 注意 -->
+  <section class="callouts">
+    <h2>注意すること</h2>
+
+    <div class="notice notice-error">
+      <strong>All repositories は選ばないこと</strong>
+      手順 5 で All repositories を選ぶと、その鍵は<b>自分のすべてのリポジトリに効いてしまいます</b>。万一漏れたときの被害範囲がまったく変わります。必ず Only select repositories で 1 つだけ指定してください。
+    </div>
+
+    <div class="notice notice-warn">
+      <strong>鍵は作成直後の 1 回しか表示されません</strong>
+      画面を閉じると二度と見られません。表示されたその場で、パスワードマネージャに保存してください。控え忘れたときは、作り直せば済みます（古いほうは Delete してください）。
+    </div>
+
+    <div class="notice notice-info">
+      <strong>端末ごとに別の鍵を作ってください</strong>
+      会社のパソコン・自宅のパソコン・iPhone で別々の鍵にしておくと、<b>その端末の鍵だけを無効にできます</b>。1 つを使い回すと、全部を作り直すことになります。
+    </div>
+
+    <div class="notice notice-ok">
+      <strong>期限切れでメモが消えることはありません</strong>
+      鍵の期限が切れると画面は読み込めなくなりますが、メモそのものは GitHub に残っています。新しい鍵を作って貼り直せば、そのまま元にもどります。
+    </div>
+
+    <div class="notice">
+      <strong>無効にしたいとき</strong>
+      Fine-grained tokens の一覧から、その鍵の <b>Delete</b> を押します。すぐに効きます。端末を紛失したときは、まずこれを行ってください。
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <h2>よくあるつまずき</h2>
+
+    <details>
+      <summary>「リポジトリが見つからないか、鍵の権限が足りていません」と出る</summary>
+      <p>次の 3 つを順に確かめてください。①オーナー名とリポジトリ名の綴り（大文字小文字は区別しません）。②手順 5 で<b>そのリポジトリを選び忘れていないか</b>。③手順 6 で Issues が Read and write になっているか。fine-grained token は、指定していないリポジトリに対しては「存在しない」という応答になります。</p>
+    </details>
+
+    <details>
+      <summary>「鍵の期限が切れているか、無効になっています」と出る</summary>
+      <p>期限切れか、鍵を Delete したときに出ます。手順 1 からもう一度作り直して、設定画面の「鍵を入れ直す」に貼ってください。メモは消えていません。</p>
+    </details>
+
+    <details>
+      <summary>Tokens (classic) で作ってしまった</summary>
+      <p>classic の鍵（<code>ghp_</code> で始まるもの）は、リポジトリを 1 つに絞れません。手順 3 にもどって Fine-grained tokens のほうで作り直し、classic のほうは Delete してください。</p>
+    </details>
+
+    <details>
+      <summary>会社のパソコンで使ってよいか不安</summary>
+      <p>接続先は GitHub だけで、こちらから通信を受ける口は開きません。そのうえで、最初の画面の<b>「このパソコンを保護する」をオンにしてください</b>。鍵がパスフレーズで暗号化され、10 分操作しないと自動でロックします。離席時の画面のぞき見にも効きます。</p>
+    </details>
+
+    <details>
+      <summary>鍵はどこに保存されるのか</summary>
+      <p>このページを開いているブラウザの中（localStorage）だけです。ページを配信しているサーバーには送られません。「このパソコンから削除」を押せば、その端末から消えます。</p>
+    </details>
+  </section>
+
+  <footer class="doc-foot">
+    <p><a href="./index.html">← VoiceInbox にもどる</a></p>
+  </footer>
+
+</div>
+
+</body>
+</html>

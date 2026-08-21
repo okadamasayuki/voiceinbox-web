@@ -1,0 +1,34 @@
+#!/bin/sh
+# public リポジトリの誤コミット防止。
+# 有効にする: git config core.hooksPath .githooks
+set -eu
+
+fail() { printf '\033[31m[コミットを中止しました] %s\033[0m\n' "$1" >&2; exit 1; }
+
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+[ -z "$staged" ] && exit 0
+
+# 1) 置いてよいファイルだけに限定する
+for f in $staged; do
+  case "$f" in
+    *.html|*.css|*.js|*.md|.gitignore|.githooks/*|LICENSE|.nojekyll) ;;
+    *) fail "このリポジトリに置けない種類のファイルです: $f
+   （メモの実データやスクリーンショットを置く場所ではありません）" ;;
+  esac
+done
+
+# 2) トークンらしき文字列
+if git diff --cached -U0 | grep -nE '(github_pat_|ghp_|gho_|ghs_|ghu_|ghr_)[A-Za-z0-9_]{10,}' >/dev/null 2>&1; then
+  fail "トークンらしき文字列が含まれています。取り除いてからコミットしてください。"
+fi
+
+# 3) 大きすぎるファイル（データの貼り込みを疑う）
+for f in $staged; do
+  [ -f "$f" ] || continue
+  size=$(wc -c < "$f" | tr -d ' ')
+  if [ "$size" -gt 262144 ]; then
+    fail "$f が大きすぎます（${size} バイト）。データを貼り込んでいないか確認してください。"
+  fi
+done
+
+exit 0

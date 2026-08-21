@@ -1,0 +1,49 @@
+# ============================================================
+#  ここは public リポジトリ。
+#  メモの中身が読み取れるものは、一切コミットしない。
+# ============================================================
+
+# 取り込み・書き出しの中間物（メモ本文が入りうる）
+*.json
+*.jsonl
+*.ndjson
+*.csv
+*.tsv
+*.sqlite
+*.sqlite3
+*.db
+data/
+cache/
+dump/
+export/
+issues/
+backup/
+sample/
+fixtures/
+
+# 画面の写真（メモが写り込む）
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.heic
+*.mov
+*.mp4
+
+# 秘密
+.env
+.env.*
+*.token
+*.key
+*.pem
+secrets*
+credentials*
+
+# OS / エディタ
+.DS_Store
+._*
+Thumbs.db
+.vscode/
+.idea/
+*.swp

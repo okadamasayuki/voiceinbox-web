@@ -1,4 +1,238 @@
 <!doctype html>
+<html lang="ja">
+<head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#f5f6f8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14171b" media="(prefers-color-scheme: dark)">
 <title>VoiceInbox</title>
-<p>準備中</p>
+<link rel="stylesheet" href="./style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f6fed'/%3E%3Ctext x='32' y='45' font-size='38' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<noscript>
+  <div class="gate"><div class="gate-inner">
+    <div class="gate-brand"><span class="mark">V</span><h1>VoiceInbox</h1></div>
+    <div class="card-surface gate-box">
+      <p style="margin:0">この画面は JavaScript が必要です。ブラウザの設定で有効にしてから読み込み直してください。</p>
+      <p style="margin:12px 0 0"><a href="./setup.html">はじめかた（鍵の作り方）</a></p>
+    </div>
+  </div></div>
+</noscript>
+
+<!-- ============================================================
+     鍵を持っていない人に見えるのはここまで。
+     この先の中身は GitHub が 401 / 404 を返すので表示されない。
+     ============================================================ -->
+<section class="gate" id="gate" hidden>
+  <div class="gate-inner">
+    <div class="gate-brand">
+      <span class="mark" aria-hidden="true">V</span>
+      <h1>VoiceInbox</h1>
+    </div>
+    <p class="gate-lead" id="gate-lead">GitHub の fine-grained token を貼ると、メモが読み込まれます。</p>
+
+    <div class="card-surface gate-box">
+      <h2 style="margin:0 0 16px;font-size:16px" id="gate-title">この端末に鍵を登録</h2>
+
+      <!-- 初回設定 -->
+      <form id="form-setup" novalidate>
+        <div id="setup-err"></div>
+
+        <div class="field">
+          <label for="g-owner">オーナー名</label>
+          <input type="text" id="g-owner" autocomplete="off" autocapitalize="none"
+                 spellcheck="false" placeholder="GitHub のユーザー名">
+          <p class="hint">リポジトリの URL をそのまま貼ってもかまいません。</p>
+        </div>
+
+        <div class="field">
+          <label for="g-repo">リポジトリ名</label>
+          <input type="text" id="g-repo" autocomplete="off" autocapitalize="none"
+                 spellcheck="false" placeholder="メモを保存しているリポジトリ">
+        </div>
+
+        <div class="field">
+          <label for="g-token">鍵（fine-grained token）</label>
+          <input type="password" id="g-token" autocomplete="off" spellcheck="false"
+                 placeholder="github_pat_ で始まる文字列">
+          <p class="hint">この鍵はこのブラウザの中だけに保存されます。ページ側には送られません。</p>
+        </div>
+
+        <hr class="divider">
+
+        <div class="field">
+          <label class="check" for="g-protect">
+            <input type="checkbox" id="g-protect">
+            <span>
+              <b>このパソコンを保護する</b><br>
+              <span class="hint" style="margin:0">
+                鍵をパスフレーズで暗号化して保存します。開くたびに入力が必要になり、10 分操作しないと自動でロックします。<b>会社のパソコンではオンを推奨します。</b>
+              </span>
+            </span>
+          </label>
+        </div>
+
+        <div id="g-pass-wrap" hidden>
+          <div class="field">
+            <label for="g-pass">パスフレーズ（8 文字以上）</label>
+            <input type="password" id="g-pass" autocomplete="new-password">
+          </div>
+          <div class="field">
+            <label for="g-pass2">パスフレーズ（確認）</label>
+            <input type="password" id="g-pass2" autocomplete="new-password">
+          </div>
+        </div>
+
+        <details style="margin-bottom:16px">
+          <summary style="cursor:pointer;font-size:14px;color:var(--text-dim)">鍵の有効期限を入れておく（任意）</summary>
+          <div class="field" style="margin-top:12px">
+            <label for="g-expiry">有効期限</label>
+            <input type="date" id="g-expiry">
+            <p class="hint">GitHub が期限を教えてくれない場合の予備です。入れておくと、期限が近づいたときに画面上部で知らせます。</p>
+          </div>
+        </details>
+
+        <button type="submit" class="btn btn-primary" id="btn-connect" style="width:100%">接続する</button>
+      </form>
+
+      <!-- ロック解除 -->
+      <form id="form-unlock" novalidate hidden>
+        <div id="unlock-err"></div>
+        <div class="field">
+          <label for="u-pass">パスフレーズ</label>
+          <input type="password" id="u-pass" autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-unlock" style="width:100%">解除する</button>
+        <button type="button" class="btn btn-quiet btn-sm" id="btn-forget-gate"
+                style="width:100%;margin-top:10px">このパソコンから削除</button>
+      </form>
+    </div>
+
+    <p class="gate-foot">
+      鍵をまだ持っていない方は <a href="./setup.html">はじめかた（鍵の作り方）</a>
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     ここから先は鍵が通ったときだけ表示される
+     ============================================================ -->
+<div class="app" id="app">
+  <header class="topbar">
+    <div class="topbar-row">
+      <span class="brand"><span class="mark" aria-hidden="true">V</span><span class="name">VoiceInbox</span></span>
+
+      <div class="tabs" role="tablist" aria-label="表示の切り替え">
+        <button class="tab" id="tab-inbox" role="tab" aria-selected="true">未処理</button>
+        <button class="tab" id="tab-trash" role="tab" aria-selected="false">ゴミ箱</button>
+      </div>
+
+      <span class="spacer"></span>
+
+      <button class="btn btn-quiet btn-sm" id="btn-theme" title="配色を切り替え">🌗 自動</button>
+      <button class="btn btn-quiet btn-sm" id="btn-settings" title="設定">⚙️ 設定</button>
+    </div>
+
+    <div class="toolbar">
+      <input type="search" class="search" id="q" placeholder="本文を検索（/ でここへ）"
+             autocomplete="off" spellcheck="false" aria-label="本文を検索">
+      <label class="visually-hidden" for="label-filter">ラベルで絞り込む</label>
+      <select id="label-filter"><option value="">すべてのラベル</option></select>
+      <button class="btn btn-sm" id="btn-refresh" title="更新（r）">更新</button>
+      <span class="count" id="count"></span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="banners" aria-live="polite"></div>
+    <ul class="cards" id="list"></ul>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ============================================================
+     設定
+     ============================================================ -->
+<dialog class="modal" id="dlg-settings" aria-labelledby="settings-title">
+  <form id="form-settings" method="dialog" novalidate>
+    <div class="modal-head">
+      <h2 id="settings-title">設定</h2>
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-quiet btn-sm" id="btn-close-settings" aria-label="閉じる">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div id="settings-err"></div>
+      <div id="s-status" style="margin-bottom:18px"></div>
+
+      <div class="field">
+        <label for="s-owner">オーナー名</label>
+        <input type="text" id="s-owner" autocomplete="off" autocapitalize="none" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="s-repo">リポジトリ名</label>
+        <input type="text" id="s-repo" autocomplete="off" autocapitalize="none" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="s-token">鍵を入れ直す</label>
+        <input type="password" id="s-token" autocomplete="off" spellcheck="false"
+               placeholder="変更しないときは空のまま">
+      </div>
+      <div class="field">
+        <label for="s-expiry">鍵の有効期限（任意）</label>
+        <input type="date" id="s-expiry">
+        <p class="hint">GitHub が期限を教えてくれない場合の予備です。</p>
+      </div>
+
+      <hr class="divider" style="border:0;height:1px;background:var(--border);margin:20px 0">
+
+      <div class="field">
+        <label class="check" for="s-protect">
+          <input type="checkbox" id="s-protect">
+          <span><b>このパソコンを保護する</b><br>
+          <span class="hint" style="margin:0">会社のパソコンではオンを推奨します。10 分操作しないと自動でロックします。</span></span>
+        </label>
+      </div>
+      <div id="s-pass-wrap" hidden>
+        <div class="field">
+          <label for="s-pass">パスフレーズ（8 文字以上）</label>
+          <input type="password" id="s-pass" autocomplete="new-password" placeholder="変更しないときは空のまま">
+        </div>
+        <div class="field">
+          <label for="s-pass2">パスフレーズ（確認）</label>
+          <input type="password" id="s-pass2" autocomplete="new-password">
+        </div>
+      </div>
+
+      <hr class="divider" style="border:0;height:1px;background:var(--border);margin:20px 0">
+
+      <h3 style="font-size:14px;margin:0 0 6px">キーボード操作</h3>
+      <div class="kbd-help">
+        <kbd>j</kbd> / <kbd>k</kbd> 選択を移動　<kbd>c</kbd> コピー　
+        <kbd>x</kbd> 完了（ゴミ箱では戻す）<br>
+        <kbd>/</kbd> 検索　<kbd>Esc</kbd> 解除　<kbd>r</kbd> 更新
+      </div>
+
+      <p class="hint" style="margin-top:18px">
+        鍵の作り方は <a href="./setup.html">はじめかた</a> にあります。
+      </p>
+    </div>
+
+    <div class="modal-foot">
+      <button type="button" class="btn btn-danger btn-sm" id="btn-forget">この端末から鍵を削除</button>
+      <button type="button" class="btn btn-sm" id="lock-now" hidden>いますぐロック</button>
+      <span class="spacer"></span>
+      <button type="submit" class="btn btn-primary" id="btn-save-settings">保存</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="./app.js"></script>
+</body>
+</html>
